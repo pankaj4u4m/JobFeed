@@ -8,30 +8,14 @@ import net.liftweb.http.StatefulSnippet
 import code.model.User
 import net.liftweb.http.js.JsCmds
 
-class SignUp extends StatefulSnippet {
-  private var email = ""
-  private var password = ""
-  private var reemail = ""
+object SignUp {
+  def render = {
+    val ns = User.signup
+    ns.andThen(
+      "#txtEmail" #> <input type="email" name="username" class="input-block-level" placeholder={ S.?("email.address") }/>)
 
-  private val whence = S.referer openOr "/"
-
-  def dispatch = {
-    case "render" => render
-    case "signUpButton" => signUpButton
+    ns;
   }
 
-  def render(html: NodeSeq): NodeSeq = {
-    val user = new User
-    user.toForm(Full("Save"), { _.save })
-  }
-
-  private def process() = {
-    Option(email) match {
-      case Some(email) if (email == reemail) => S.error("emailId same, Authentication not implemented")
-      case _ => S.error("Account Creation not implemented")
-    }
-  }
-
-  def signUpButton = { "button [onclick]" #> SHtml.onEvent(s => S.redirectTo("/")) }
-
+  def signUpButton = { "button [onclick]" #> SHtml.onEvent(s => S.redirectTo("/user/sign_up")) }
 }

@@ -27,9 +27,8 @@ class Boot extends Loggable {
 
     // Build SiteMap
     val entries = List(
-      Menu.i("Home") / "index", // the simple way to declare a menu
-      Menu.i("Signin") / "signin" // the simple way to declare a menu
-
+      Menu.i("Index") / "index", // the simple way to declare a menu
+      Menu.i("Home") / "home"
     // more complex because this menu allows anything in the
     // /static path to be visible
     //Menu(Loc("Static", Link(List("static"), true, "/static/index"),
@@ -57,11 +56,14 @@ class Boot extends Loggable {
 
     Schemifier.schemify(true, Schemifier.infoF _, User)
 
-  //  LiftRules.statelessRewrite.append {
-  //    case RewriteRequest(
-  //      ParsePath("index" :: Nil, _, _, _), _, _) if (!User.loggedIn_?) =>
-  //      RewriteResponse("user" :: "sign_up" :: Nil)
-  //  }
+    //    LiftRules.statelessRewrite.append {
+    //      case RewriteRequest(
+    //        ParsePath("index" :: Nil, _, _, _), _, _) if (User.loggedIn_?) =>
+    //        RewriteResponse("home" :: Nil)
+    //      case RewriteRequest(
+    //        ParsePath("home" :: Nil, _, _, _), _, _) if (!User.loggedIn_?) =>
+    //        RewriteResponse("login" :: Nil)
+    //    }
 
     //    //Init the jQuery module, see http://liftweb.net/jquery for more information.
     //    LiftRules.jsArtifacts = JQueryArtifacts

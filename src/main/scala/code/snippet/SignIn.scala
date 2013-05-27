@@ -9,5 +9,9 @@ import net.liftweb.http.js.JsCmds
 import code.model.User
 
 object SignIn {
-  def render = User.signup
+  def render = {
+    var ns = User.signup
+    ns.andThen("#userlogin" #> <button class="pull-right btn"><strong>Create An Account</strong></button>)
+    ns
+  }
 }

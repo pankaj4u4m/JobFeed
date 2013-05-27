@@ -7,6 +7,7 @@ import scala.xml.NodeSeq
 import mapper._
 import net.liftweb.util.Settable
 import scala.xml.Elem
+import net.liftweb.mapper.MappedOneToMany
 
 object User extends User with MetaMegaProtoUser[User] {
 
@@ -18,13 +19,26 @@ object User extends User with MetaMegaProtoUser[User] {
 
   override val basePath = List()
 
-  override def screenWrap = Full(<lift:surround with="user" at="user"><lift:bind/></lift:surround>)
+  override def screenWrap = Full(
+    <lift:surround with="user" at="user">
+      <lift:bind/>
+    </lift:surround>)
 
   override def skipEmailValidation = true
 
   override def signupFields = List(email, password);
 
   override def editFields: List[FieldPointerType] = List(email)
+
+  override def signup = {
+    var ns = super.signup
+    //FIXME find better way to create link from list
+    //FIXME User localization for string
+    (<div class="header">
+       <span class="pull-right">Already on Job Feed? <a href={ loginPageURL }>{ S.?("log.in") }</a></span>
+       <h2>Job Feed</h2>
+     </div>).++(ns)
+  }
 
   override def signupXhtml(user: TheUserType) = {
     (<form method="post" action={ S.uri } class="form-signin">
@@ -36,20 +50,37 @@ object User extends User with MetaMegaProtoUser[User] {
      </form>)
   }
 
+  override def login = {
+    var ns = super.login //FIXME find better way to create link
+    //FIXME User localization for string
+    //FIXME replace onClick
+    val signUpButton = "button [onclick]" #> SHtml.onEvent(s => S.redirectTo(signUpPath.mkString("/", "/", "")))
+    signUpButton((<div class="header">
+                    <span class="pull-right"><button class="btn"><strong>Create An Account</strong></button></span>
+                    <h2>Job Feed</h2>
+                  </div>).++(ns))
+
+  }
+
   override def loginXhtml = {
     (<form method="post" action={ S.uri } class="form-signin">
        <table>
          <tr><td colspan="2"><h3 class="form-signin-heading">{ S.?("log.in") }</h3></td></tr>
-         <tr><td><input type="email" name="username" class="input-block-level span3" placeholder={ S.?("email.address") } maxlength="48"/></td></tr>
-         <tr><td><input type="password" name="password" class="input-block-level span3" placeholder={ S.?("password") } maxlength="48"/></td></tr>
-         <tr>
-           <td>
-             <user:submit/>
-             <span class="pull-right"><a href={ lostPasswordPath.mkString("/", "/", "") }> { S.?("recover.password") }</a> </span>
-           </td>
-         </tr>
+         <tr><td><input type="text" name="username" class="input-block-level" placeholder={ S.?("email.address") } maxlength="48"/></td></tr>
+         <tr><td><input type="password" name="password" class="input-block-level" placeholder={ S.?("password") } maxlength="48"/></td></tr>
+         <tr><td><user:submit/></td></tr>
+         <tr><td><span style=" padding-top: 10px; display: block; "><a href={ lostPasswordPath.mkString("/", "/", "") } style=" margin-left: 65px; "> { S.?("recover.password") }</a> </span></td></tr>
        </table>
      </form>)
+  }
+
+  override def edit = {
+    var ns = super.edit
+    //FIXME find better way to create link from list
+    (<div class="header">
+       <span class="pull-right"> <a href={ logoutPath.mkString("/", "/", "") }>{ S.?("log.out") }</a></span>
+       <h2>Job Feed</h2>
+     </div>).++(ns)
   }
 
   override def editXhtml(user: TheUserType) = {
@@ -62,20 +93,40 @@ object User extends User with MetaMegaProtoUser[User] {
      </form>)
   }
 
+  override def lostPassword = {
+    var ns = super.lostPassword
+    //FIXME find better way to create link from list
+    //FIXME User localization for string
+    (<div class="header">
+       <span class="pull-right">Already on Job Feed? <a href={ loginPageURL }>{ S.?("log.in") }</a></span>
+       <h2>Job Feed</h2>
+     </div>).++(ns)
+  }
+
   override def lostPasswordXhtml = {
     (<form method="post" action={ S.uri } class="form-signin">
        <table>
-         <tr><td colspan="2"> <h3 class="form-signin-heading"> { S.?("enter.email") } </h3></td></tr>
+         <tr><td colspan="2"> { S.?("enter.email") } </td></tr>
          <tr><td>{ userNameFieldString }</td><td><user:email/></td></tr>
          <tr><td><user:submit/></td></tr>
        </table>
      </form>)
   }
 
+  override def passwordReset(id: String) = {
+    var ns = super.passwordReset(id)
+    //FIXME find better way to create link from list
+    //FIXME User localization for string
+    (<div class="header">
+       <span class="pull-right">Already on Job Feed? <a href={ loginPageURL }>{ S.?("log.in") }</a></span>
+       <h2>Job Feed</h2>
+     </div>).++(ns)
+  }
+
   override def passwordResetXhtml = {
     (<form method="post" action={ S.uri } class="form-signin">
        <table>
-         <tr><td colspan="2"> <h3 class="form-signin-heading">{ S.?("reset.your.password") } </h3></td></tr>
+         <tr><td colspan="2"> { S.?("reset.your.password") } </td></tr>
          <tr><td>{ S.?("enter.your.new.password") }</td><td><user:pwd/></td></tr>
          <tr><td>{ S.?("repeat.your.new.password") }</td><td><user:pwd/></td></tr>
          <tr><td><user:submit/></td></tr>
@@ -83,8 +134,17 @@ object User extends User with MetaMegaProtoUser[User] {
      </form>)
   }
 
+  override def changePassword = {
+    var ns = super.changePassword
+    //FIXME User localization for string
+    (<div class="header">
+       <span class="pull-right"><a href={ logoutPath.mkString("/", "/", "") }>{ S.?("log.out") }</a></span>
+       <h2>Job Feed</h2>
+     </div>).++(ns)
+  }
+
   override def changePasswordXhtml = {
-    (<form method="post" action={ S.uri }>
+    (<form method="post" action={ S.uri } class="form-signin">
        <table>
          <tr><td colspan="2">{ S.?("change.password") }</td></tr>
          <tr><td>{ S.?("old.password") }</td><td><user:old_pwd/></td></tr>
@@ -117,11 +177,11 @@ class User extends MegaProtoUser[User] with CreatedUpdated {
   override lazy val email: MappedEmail[User] = new ModifiedEmail(this, 48)
 
   protected class ModifiedEmail(obj: User, size: Int) extends MyEmail(obj, size) {
-    override protected def formInputType = "email"
+    //override protected def formInputType = "email"
     override def _toForm: Box[Elem] =
       S.fmapFunc({ s: List[String] => this.setFromAny(s) }) { name =>
         Full(appendFieldId(
-          <input type={ formInputType } maxlength={ maxLen.toString } name={ name } value={ is match { case null => "" case s => s.toString } } class="input-block-level span3" placeholder={ S.?("email.address") }/>))
+          <input type={ formInputType } maxlength={ maxLen.toString } name={ name } value={ is match { case null => "" case s => s.toString } } class="input-block-level" placeholder={ S.?("email.address") }/>))
       }
   }
 
@@ -131,8 +191,8 @@ class User extends MegaProtoUser[User] with CreatedUpdated {
     override def _toForm: Box[NodeSeq] = {
       S.fmapFunc({ s: List[String] => this.setFromAny(s) }) { funcName =>
         Full(<span>
-               { appendFieldId(<input type={ formInputType } name={ funcName } value="" class="input-block-level span3" placeholder={ displayName }/>) }
-               <input type={ formInputType } name={ funcName } value="" class="input-block-level span3" placeholder={ S.?("repeat") + " " + displayName }/>
+               { appendFieldId(<input type={ formInputType } name={ funcName } value="" class="input-block-level" placeholder={ displayName }/>) }
+               <input type={ formInputType } name={ funcName } value="" class="input-block-level" placeholder={ S.?("repeat") + " " + displayName }/>
              </span>)
       }
     }

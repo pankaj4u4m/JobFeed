@@ -10,12 +10,8 @@ import net.liftweb.http.js.JsCmds
 
 object SignUp {
   def render = {
-    val ns = User.signup
-    ns.andThen(
-      "#txtEmail" #> <input type="email" name="username" class="input-block-level" placeholder={ S.?("email.address") }/>)
-
-    ns;
+    var ns = User.signup
+    ns.andThen("#userlogin" #> <span> { "Already on Job Feed?" } <a href="/login">Log in</a> </span>)
+    ns
   }
-
-  def signUpButton = { "button [onclick]" #> SHtml.onEvent(s => S.redirectTo("/user/sign_up")) }
 }

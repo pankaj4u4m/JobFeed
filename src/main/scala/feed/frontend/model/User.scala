@@ -1,4 +1,4 @@
-package code.model
+package feed.frontend.model
 import net.liftweb._
 import http._
 import common._
@@ -7,7 +7,6 @@ import scala.xml.NodeSeq
 import mapper._
 import net.liftweb.util.Settable
 import scala.xml.Elem
-import net.liftweb.mapper.MappedOneToMany
 
 object User extends User with MetaMegaProtoUser[User] {
 

@@ -23,7 +23,7 @@ class Boot extends Loggable {
     DB.defineConnectionManager(DefaultConnectionIdentifier, MyDbVendor)
 
     // where to search snippet
-    LiftRules.addToPackages("code")
+    LiftRules.addToPackages("feed.frontend")
 
     // Build SiteMap
     val entries = List(

@@ -1,4 +1,4 @@
-package code.model
+package feed.frontend.model
 
 import net.liftweb.mapper._
 
@@ -11,9 +11,9 @@ object Resume extends Resume with LongKeyedMetaMapper[Resume] {
 
 class Resume extends LongKeyedMapper[Resume] with IdPK with CreatedUpdated {
   def getSingleton = Resume
-  object order extends MappedInt(this)
+  object order extends MappedInt(this) // order of each header in stack for one resume
   object user extends MappedLongForeignKey(this, User)
-  object header extends MappedString(this, 256)
-  object resumeHeader extends MappedLongForeignKey(this, ResumeHeader)
-  object description extends MappedText(this)
+  object title extends MappedString(this, 256)
+  object header extends MappedLongForeignKey(this, Header)
+  object details extends MappedText(this)
 }

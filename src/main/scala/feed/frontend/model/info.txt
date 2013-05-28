@@ -1,0 +1,2 @@
+* all the classes are loosely coupled so later if I need to extend the database or split horizontally I will not have much problem
+* convention followed : All small string will be bounded to 256 character. If it is taking more than that then it is text and not string 

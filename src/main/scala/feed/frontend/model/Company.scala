@@ -21,7 +21,7 @@ class Company extends LongKeyedMapper[Company] with IdPK with CreatedUpdated {
 
   def employeesIds: List[Employee] = Employee.findAll(By(Employee.company, this))
 
-  def employees: List[User] = employeesIds.map((x) => User.findAll(By(User.id, x.whoWorks))).flatten
+  //def employees: List[User] = employeesIds.map((x) => User.findAll(By(User.id, x.whoWorks))).flatten
 
   def jobs: List[Job] = Job.findAll(By(Job.company, this))
 

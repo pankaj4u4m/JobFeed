@@ -11,8 +11,8 @@ import net.liftweb.http.js.jquery._
 import net.liftmodules.FoBo
 import net.liftweb.mapper.DB
 import net.liftweb.mapper.DefaultConnectionIdentifier
-import code.model.User
 import net.liftweb.mapper.Schemifier
+import feed.frontend.model.User
 
 /**
  * A class that's instantiated early and run.  It allows the application
@@ -26,10 +26,11 @@ class Boot extends Loggable {
     LiftRules.addToPackages("feed.frontend")
 
     // Build SiteMap
+    //TODO hide based on login
     val entries = List(
       Menu.i("Index") / "index", // the simple way to declare a menu
       Menu.i("Home") / "home",
-      Menu.i("Resume") / "resume"
+      Menu.i("Resume") / "user" / "resume"
     // more complex because this menu allows anything in the
     // /static path to be visible
     //Menu(Loc("Static", Link(List("static"), true, "/static/index"),

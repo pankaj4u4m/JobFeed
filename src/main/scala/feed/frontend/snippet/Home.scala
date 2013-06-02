@@ -1,9 +1,9 @@
-package code.snippet
+package feed.frontend.snippet
 
-import code.model.User
 import net.liftweb.common.Full
 import net.liftweb.http.S
 import net.liftweb.http.SHtml
+import feed.frontend.model.User
 
 object Home {
   def render = {

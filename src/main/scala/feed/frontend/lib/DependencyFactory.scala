@@ -1,4 +1,4 @@
-package code
+package feed.frontend
 package lib
 
 import net.liftweb._
